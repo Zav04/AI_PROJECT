@@ -1,3 +1,5 @@
+##BFS não considera o custo do caminho por isso tem de se otimizar para outro algoritmo
+
 def solve(start_row, start_col):
     q = []
     q.append((start_row, start_col))
