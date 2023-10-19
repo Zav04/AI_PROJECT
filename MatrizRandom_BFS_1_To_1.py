@@ -12,7 +12,7 @@ def create_matrix(rows, cols, min_percentage, max_percentage):
         matrix[i][j] = '#'
 
     # Adiciona 'R' e 'P' em posições aleatórias
-    robot_position = (0, 0)  # Posição (1, 10)
+    robot_position = random.choice(positions[num_ones:])
     product_position = random.choice(positions[num_ones:])
 
     matrix[robot_position[0]][robot_position[1]] = 'R'
@@ -27,7 +27,8 @@ matrix = create_matrix(10, 10, 10, 30)
 for row in matrix:
     print(' '.join(map(str, row)))
 
-# Salva a matriz em um arquivo txt identificado como "PP"
-with open("PP.txt", "w") as file:
+# Guarda a matriz em um arquivo txt identificado como "MatrixProcura"
+#Ficheiro é gravado sem espaços para depois ser mais facil de ler e validar o BFS
+with open("MatrizRandom_BFS_1_To_1.txt", "w") as file:
     for row in matrix:
-        file.write(' '.join(map(str, row)) + '\n')
+        file.write(' '.join(row) + '\n')

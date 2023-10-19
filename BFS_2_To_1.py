@@ -7,7 +7,7 @@ def solve(start_row, start_col):
     prev = [[None for i in range(cols)] for j in range(rows)]
     while len(q) > 0:
         row, col = q.pop(0)
-        if m[row][col] == 'P':
+        if matrizProcura[row][col] == 'P':
             return prev
         
         # Check adjacent cells
@@ -18,7 +18,7 @@ def solve(start_row, start_col):
                 next_row >= 0 and next_row < rows and
                 next_col >= 0 and next_col < cols and
                 not visited[next_row][next_col] and
-                m[next_row][next_col] != '#'
+                matrizProcura[next_row][next_col] != '#'
             ):
                 q.append((next_row, next_col))
                 visited[next_row][next_col] = True
@@ -43,12 +43,14 @@ def bfs(start_row, start_col, end_row, end_col):
         return []
     return reconstructPath(start_row, start_col, end_row, end_col, prev)
 
-with open('PP.txt', 'r') as f:
-    lines = f.read().splitlines()
-    m = [list(line) for line in lines]
 
-rows = len(m)
-cols = len(m[0])
+#Abrir o Ficheiro e ler todas as linhas
+with open('MatrizRandom_BFS_2_To_1.txt', 'r') as f:
+    matrizProcura = [linha.strip().split() for linha in f]
+
+
+rows = len(matrizProcura)
+cols = len(matrizProcura[0])
 start_row = 0
 start_col = 0
 end_row = 0
@@ -56,27 +58,34 @@ end_col = 0
 
 for i in range(rows):
     for j in range(cols):
-        if m[i][j] == 'S':
-            start_row = i
-            start_col = j
-        if m[i][j] == 'P':
+        if matrizProcura[i][j] == 'R':
+            start_robot1_row = i
+            start_robot1_col = j
+        if matrizProcura[i][j] == 'P':
             end_row = i
             end_col = j
+        if matrizProcura[i][j] == 'R1':
+            start_robot2_row = i
+            start_robot2_col = j
 
 print("Labirinto:")
-for row in m:
+for row in matrizProcura:
     print(' '.join(row))
 
-print("\nBuscando um caminho:")
+print("\Procura do caminho um caminho:")
 
 path = bfs(start_row, start_col, end_row, end_col)
 
 if len(path) > 0:
     print("Caminho encontrado:")
     for row, col in path:
-        m[row][col] = 'R'
-    for row in m:
+        if matrizProcura[row][col] != 'P':  
+            matrizProcura[row][col] = 'R'
+    for row in matrizProcura:
         print(' '.join(row))
+    with open("MatrizRandom_BFS_2_To_1_OUTPUT.txt", "w") as file:
+        for row in matrizProcura:
+            file.write(''.join(row) + '\n')
 else:
     print("Caminho não encontrado.")
 
