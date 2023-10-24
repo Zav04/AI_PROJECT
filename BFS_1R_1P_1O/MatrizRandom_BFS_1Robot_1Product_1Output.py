@@ -1,4 +1,5 @@
 import random
+import time
 
 # Função para criar a matriz com a percentagem desejada de 1s e um ponto 'P'
 def create_matrix(rows, cols, percentageobstacles):
@@ -38,14 +39,25 @@ def create_matrix(rows, cols, percentageobstacles):
 
     return matrix  # Retorna a matriz criada.
 
+#Start Timmer
+start_time = time.time()
+
 # Cria a matriz com X linhas e Y colunas, com XX% de '#' nas linhas e nas colunas
-matrix = create_matrix(20, 20, 10)
+matrix = create_matrix(5000, 5000, 45)
 
 # Print a matriz, linha por linha
-for row in matrix:
-    print(' '.join(map(str, row)))  # Print dos elementos da matriz
+# for row in matrix:
+#     print(' '.join(map(str, row)))  # Print dos elementos da matriz
 
 # Guarda a matriz
 with open("BFS_1R_1P_1O/MatrizRandom_BFS_1R_1P_1O.txt", "w") as file:
     for row in matrix:
         file.write(' '.join(row) + '\n')  # Escreve cada linha da matriz
+
+
+#End Timmer
+end_time = time.time()
+#Saber tempo de processamento
+execution_time = end_time - start_time
+print("Tempo de Criação da Matriz:",execution_time)
+print('MATRIZ CRIADA')

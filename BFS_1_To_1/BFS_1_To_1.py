@@ -1,3 +1,4 @@
+import time
 class BFS:
     # Construtor da classe BFS que inicializa a matriz, dimensões, e as matriz de pontos visitados
     def __init__(self, matriz):
@@ -79,10 +80,12 @@ for i in range(bfs_search.rows):
         elif matriz[i][j] == 'P':
             end_row, end_col = i, j  # Define a posição de fim
 
-print("Labirinto:")  # Imprime o labirinto original
-for row in matriz:
-    print(' '.join(row))
+# print("Labirinto:")  # Imprime o labirinto original
+# for row in matriz:
+#     print(' '.join(row))
 
+#Start Timmer
+start_time = time.time()
 print("\nProcura do caminho:")  # Inicia a busca pelo caminho
 path = bfs_search.search(start_row, start_col, end_row, end_col)
 
@@ -92,10 +95,16 @@ if path:
     for row, col in path:
         if matriz[row][col] != 'P':
             matriz[row][col] = 'R'  # Marca os pontos do caminho como 'R'
-    for row in matriz:
-        print(' '.join(row))  # Imprime o labirinto com o caminho
+    # for row in matriz:
+    #     print(' '.join(row))  # Imprime o labirinto com o caminho
     with open("BFS_1_To_1/Output/MatrizRandom_BFS_1_To_1_OUTPUT.txt", "w") as file:
         for row in matriz:
             file.write(' '.join(row) + '\n')  # Salva o labirinto com o caminho em um arquivo
 else:
     print("Caminho não encontrado.")  # Informa o usuário se não houver caminho
+
+#End Timmer
+end_time = time.time()
+#Saber tempo de processamento
+execution_time = end_time - start_time
+print("Tempo de Procura:",execution_time)

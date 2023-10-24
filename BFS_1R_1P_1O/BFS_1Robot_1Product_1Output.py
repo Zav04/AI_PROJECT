@@ -1,3 +1,4 @@
+import time
 ##BFS não considera o custo do caminho por isso tem de se otimizar para outro algoritmo
 class BFS:
     # Construtor da classe BFS que inicializa a matriz, dimensões, e as matriz de pontos visitados
@@ -65,9 +66,9 @@ class BFS:
 with open('BFS_1R_1P_1O/MatrizRandom_BFS_1R_1P_1O.txt', 'r') as f:
     matrizProcura = [linha.strip().split() for linha in f]  # Lê cada linha do ficheiro, remove espaços em branco
 
-print("Labirinto:")  # Print do labirinto original
-for row in matrizProcura:
-    print(' '.join(row)) 
+# print("Labirinto:")  # Print do labirinto original
+# for row in matrizProcura:
+#     print(' '.join(row)) 
 
 # Cria um filho da classe BFS
 bfs_search= BFS(matrizProcura)  # Inicializa a classe BFS com a matriz do labirinto
@@ -92,6 +93,9 @@ for i in range(rows):
             output_row = i
             output_col = j
 
+#Start Timmer
+start_time = time.time()
+
 print("\Procura do caminho um caminho ROBOT TO PRODUCT:")
 Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col)  # Procura o caminho do robô até o produto
 if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
@@ -99,17 +103,25 @@ if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
     for row, col in Robot2Product_path:  # Para cada ponto no caminho
         if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
             matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
-    for row in matrizProcura:
-        print(' '.join(row))  # Print do labirinto com o caminho marcado
+    # for row in matrizProcura:
+    #     print(' '.join(row))  # Print do labirinto com o caminho marcado
     # Escreve o labirinto com o caminho do robot
     with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
         for row in matrizProcura:
             file.write(' '.join(row) + '\n')  
 else:
     print("Caminho não encontrado.")  # Se não houver caminho
+#End Timmer
+end_time = time.time()
+#Saber tempo de processamento
+execution_time = end_time - start_time
+print("Tempo de Procura:",execution_time)
 
 # Atualiza a matriz do objeto para a próxima busca
 bfs_search.matriz=matrizProcura
+
+#Start Timmer
+start_time = time.time()
 
 # Procura do caminho do produto até a saída
 print("\Procura do caminho um caminho PRODUCT TO OUTPUT :")
@@ -119,11 +131,17 @@ if len(Product2Output_path) > 0:  # Se um caminho foi encontrado
     for row, col in Product2Output_path:  # Para cada ponto no caminho
         if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
             matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
-    for row in matrizProcura:
-        print(' '.join(row))  # Print do labirinto com o caminho marcado
+    # for row in matrizProcura:
+    #     print(' '.join(row))  # Print do labirinto com o caminho marcado
     # Escreve o labirinto com o caminho do Output
     with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
         for row in matrizProcura:
             file.write(' '.join(row) + '\n') 
 else:
     print("Caminho não encontrado.")  # Se não houver caminho
+
+#End Timmer
+end_time = time.time()
+#Saber tempo de processamento
+execution_time = end_time - start_time
+print("Tempo de Procura:",execution_time)
