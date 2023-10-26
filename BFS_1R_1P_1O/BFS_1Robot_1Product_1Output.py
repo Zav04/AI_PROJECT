@@ -118,7 +118,7 @@ execution_time = end_time - start_time
 print("Tempo de Procura:",execution_time)
 
 # Atualiza a matriz do objeto para a próxima busca
-bfs_search.matriz= BFS(matrizProcura)
+bfs_search.matriz= matrizProcura
 
 #Start Timmer
 start_time = time.time()
