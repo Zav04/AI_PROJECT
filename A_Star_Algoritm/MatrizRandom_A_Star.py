@@ -18,7 +18,7 @@ def create_matrix(rows, cols, percentageobstacles):
         matrix[i][j] = '#'
 
     # Seleciona posições aleatórias para o robô e o produto
-    robot_position = random.choice(positions[num_ones:])
+    robot_position = (0,0)
     product_position = random.choice(positions[num_ones:])
 
     # Se o produto e o robô estiverem na mesma posição, escolhe uma nova posição para o produto.
@@ -43,7 +43,7 @@ def create_matrix(rows, cols, percentageobstacles):
 start_time = time.time()
 
 # Cria a matriz com X linhas e Y colunas, com XX% de '#' nas linhas e nas colunas
-matrix = create_matrix(500, 500, 30)
+matrix = create_matrix(10, 10, 30)
 
 # Print a matriz, linha por linha
 # for row in matrix:
