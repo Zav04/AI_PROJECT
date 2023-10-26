@@ -122,7 +122,7 @@ def direction_to_write(direction):
         return 'r'
 
 # Carrega a matriz do arquivo
-with open('A_Star_Algoritm/MatrizRandom_A_Star.txt', 'r') as f:
+with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
     matrizProcura = [linha.strip().split() for linha in f]
 
 

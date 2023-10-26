@@ -43,14 +43,14 @@ def create_matrix(rows, cols, percentageobstacles):
 start_time = time.time()
 
 # Cria a matriz com X linhas e Y colunas, com XX% de '#' nas linhas e nas colunas
-matrix = create_matrix(10, 10, 30)
+matrix = create_matrix(10, 10, 10)
 
 # Print a matriz, linha por linha
 # for row in matrix:
 #     print(' '.join(map(str, row)))  # Print dos elementos da matriz
 
 # Guarda a matriz
-with open("BFS_1R_1P_1O/MatrizRandom_BFS_1R_1P_1O.txt", "w") as file:
+with open("Matriz_Random/MatrizRandom.txt", "w") as file:
     for row in matrix:
         file.write(' '.join(row) + '\n')  # Escreve cada linha da matriz
 

@@ -63,7 +63,7 @@ class BFS:
         return self.reconstruct_path(start_row, start_col, end_row, end_col)
 
 #Abrir o Ficheiro e ler todas as linhas
-with open('BFS_1R_1P_1O/MatrizRandom_BFS_1R_1P_1O.txt', 'r') as f:
+with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
     matrizProcura = [linha.strip().split() for linha in f]  # Lê cada linha do ficheiro, remove espaços em branco
 
 # print("Labirinto:")  # Print do labirinto original
