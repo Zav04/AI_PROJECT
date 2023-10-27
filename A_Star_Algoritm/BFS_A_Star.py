@@ -113,13 +113,13 @@ def add_to_open(open_list, neighbor):
 # Função para converter direção em letra
 def direction_to_write(direction):
     if direction == (-1, 0):
-        return 'u'
+        return '^'
     elif direction == (1, 0):
-        return 'd'
+        return 'v'
     elif direction == (0, -1):
-        return 'l'
+        return '<'
     elif direction == (0, 1):
-        return 'r'
+        return '>'
 
 # Carrega a matriz do arquivo
 with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
