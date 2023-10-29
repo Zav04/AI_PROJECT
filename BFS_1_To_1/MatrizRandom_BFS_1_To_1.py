@@ -21,7 +21,7 @@ def create_matrix(rows, cols, percentageobstacles):
     robot_position = (0,0)
     product_position = random.choice(positions[num_ones:])
     # Certifica que 'R' e 'P' não são colocados na mesma posição
-    while robot_position == product_position:
+    while product_position == robot_position:
         product_position = random.choice(positions[num_ones:])
 
     matrix[robot_position[0]][robot_position[1]] = 'R'  # Coloca 'R' na posição escolhida

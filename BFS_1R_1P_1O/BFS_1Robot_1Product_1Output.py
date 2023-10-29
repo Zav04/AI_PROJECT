@@ -9,6 +9,10 @@ class BFS:
         self.visited = [[False for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para rastrear se cada posição que foi visitada
         self.prev = [[None for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para armazenar a ponto anterior no caminho mais curto
 
+    def clear(self):
+        self.visited = [[False for _ in range(self.cols)] for _ in range(self.rows)]  
+        self.prev = [[None for _ in range(self.cols)] for _ in range(self.rows)] 
+        
     # Método que executa a busca em largura (BFS) a partir do ponto inical
     def solve(self, start_row, start_col):
         q = [(start_row, start_col)]  # Um vector que contém os pontos a serem visitados, começando pelo ponto de início
@@ -73,6 +77,7 @@ with open('BFS_1R_1P_1O/MatrizRandom_BFS_1R_1P_1O.txt', 'r') as f:
 # Cria um filho da classe BFS
 bfs_search= BFS(matrizProcura)  # Inicializa a classe BFS com a matriz do labirinto
 
+
 # Obter o número de linhas e colunas do labirinto
 rows = len(matrizProcura)
 cols = len(matrizProcura[0])
@@ -118,7 +123,10 @@ execution_time = end_time - start_time
 print("Tempo de Procura:",execution_time)
 
 # Atualiza a matriz do objeto para a próxima busca
-bfs_search.matriz= BFS(matrizProcura)
+bfs_search.matriz= matrizProcura
+
+#Limpa Vectores de previsão de caminhos visitados
+BFS.clear(bfs_search)
 
 #Start Timmer
 start_time = time.time()
