@@ -17,21 +17,16 @@ def create_matrix(rows, cols, percentageobstacles):
     for i, j in positions[:num_ones]:
         matrix[i][j] = '#'
 
-    # Seleciona posições aleatórias para o robô e o produto
+    # Seleciona posições para o robô e o output
     robot_position = (0, 0)
-    product_position = (i, j)
-
-    # Se o produto e o robô estiverem na mesma posição, escolhe uma nova posição para o produto.
-    while product_position == robot_position:
-        product_position = random.choice(positions[num_ones:])
-        
-    # Seleciona uma posição aleatória para a saída
-    output_position = random.choice(positions[num_ones:])
+    output_position = (rows-1, cols-1)
     
-    # Se a saída estiver na mesma posição do robô ou do produto, escolhe uma nova posição para a saída.
-    while output_position == robot_position or output_position == product_position:
-        output_position = random.choice(positions[num_ones:])
+    product_position = random.choice(positions[num_ones:])
 
+    # Se o produto e o robô ou o produto e o ouput estiverem na mesma posição, escolhe uma nova posição para o produto.
+    while product_position == robot_position or product_position == output_position:
+        product_position = random.choice(positions[num_ones:])
+    
     # Define as posições do robô, do produto e da saída na matriz.
     matrix[robot_position[0]][robot_position[1]] = 'R'
     matrix[product_position[0]][product_position[1]] = 'P'

@@ -54,7 +54,8 @@ def a_star(matriz, start, end):
         closed_set.add(current_node.position)
 
         # Gera os possíveis movimentos
-        for new_position in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        # for new_position in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        for new_position in [(0, -1), (0, 1),(-1, 0), (1, 0), ]:
             #(-1, 0): Este é um movimento para cima.
             #(1, 0): Este é um movimento para baixo.
             #(0, -1): Este é um movimento para a esquerda.
@@ -151,19 +152,20 @@ print("\Procura do caminho um caminho ROBOT TO PRODUCT:")
 caminho = a_star(matrizProcura, robot_point, product_point)
 
 # Se um caminho foi encontrado
-if len(caminho) > 0:
-    print("Caminho encontrado:")
-    for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
-        if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-            #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-            if(direcao is None):
-                continue
-            matrizProcura[row][col] = direction_to_write(direcao)
-    # for row in matrizProcura:
-    #     print(' '.join(row))
-    with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
-        for row in matrizProcura:
-            file.write(' '.join(row) + '\n')
+if(caminho is not None):
+    if len(caminho) > 0:
+        print("Caminho encontrado:")
+        for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
+            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+                #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+                if(direcao is None):
+                    continue
+                matrizProcura[row][col] = direction_to_write(direcao)
+        # for row in matrizProcura:
+        #     print(' '.join(row))
+        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
+            for row in matrizProcura:
+                file.write(' '.join(row) + '\n')
 else:
     print("Caminho não encontrado.")
     
@@ -172,19 +174,20 @@ print("\Procura do caminho um caminho PRODUCT TO OUPUT:")
 
 caminho = a_star(matrizProcura, product_point, output_point)
 
-if len(caminho) > 0:
-    print("Caminho encontrado:")
-    for (row, col), direcao in caminho:
-        if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-        #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-            if(direcao is None):
-                continue
-            matrizProcura[row][col] = direction_to_write(direcao)
-    # for row in matrizProcura:
-    #     print(' '.join(row))
-    with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
-        for row in matrizProcura:
-            file.write(' '.join(row) + '\n')
+if(caminho is not None):
+    if len(caminho) > 0:
+        print("Caminho encontrado:")
+        for (row, col), direcao in caminho:
+            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+            #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+                if(direcao is None):
+                    continue
+                matrizProcura[row][col] = direction_to_write(direcao)
+        # for row in matrizProcura:
+        #     print(' '.join(row))
+        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
+            for row in matrizProcura:
+                file.write(' '.join(row) + '\n')
 else:
     print("Caminho não encontrado.")
 
