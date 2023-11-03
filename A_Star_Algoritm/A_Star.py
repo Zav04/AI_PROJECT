@@ -146,7 +146,7 @@ for i in range(rows):
 
 #Start Timmer
 start_time = time.time()
-print("\Procura do caminho um caminho ROBOT TO PRODUCT:")
+print("Procura do caminho um caminho ROBOT TO PRODUCT:")
 
 # Procura o caminho do robô até o produto
 caminho = a_star(matrizProcura, robot_point, product_point)
@@ -154,7 +154,7 @@ caminho = a_star(matrizProcura, robot_point, product_point)
 # Se um caminho foi encontrado
 if(caminho is not None):
     if len(caminho) > 0:
-        print("Caminho encontrado:")
+        print("\033[92mCaminho encontrado:\033[0m")
         for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
             if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
                 #Se for a posição inical não existe direção por isso tem de se passar para o proximo
@@ -167,16 +167,23 @@ if(caminho is not None):
             for row in matrizProcura:
                 file.write(' '.join(row) + '\n')
 else:
-    print("Caminho não encontrado.")
-    
+    print("\033[91mCaminho não encontrado\033[0m")
 
-print("\Procura do caminho um caminho PRODUCT TO OUPUT:")
+#End Timmer
+end_time = time.time()
+#Saber tempo de processamento
+execution_time = end_time - start_time
+print("Tempo de Procura: {:.15f} segundos".format(execution_time))
+
+
+start_time = time.time()
+print("Procura do caminho um caminho PRODUCT TO OUPUT:")
 
 caminho = a_star(matrizProcura, product_point, output_point)
 
 if(caminho is not None):
     if len(caminho) > 0:
-        print("Caminho encontrado:")
+        print("\033[92mCaminho encontrado:\033[0m")
         for (row, col), direcao in caminho:
             if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
             #Se for a posição inical não existe direção por isso tem de se passar para o proximo
@@ -189,10 +196,10 @@ if(caminho is not None):
             for row in matrizProcura:
                 file.write(' '.join(row) + '\n')
 else:
-    print("Caminho não encontrado.")
+    print("\033[91mCaminho não encontrado\033[0m")
 
 #End Timmer
 end_time = time.time()
 #Saber tempo de processamento
 execution_time = end_time - start_time
-print("Tempo de Procura:",execution_time)
+print("Tempo de Procura: {:.15f} segundos".format(execution_time))

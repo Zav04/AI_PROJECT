@@ -15,7 +15,7 @@ class BFS:
         self.visited[start_row][start_col] = True  # Marca a ponto de início como visitada
 
         # Continua até que todas os pontos possíveis tenham sido visitadas
-        while len(q) > 0:
+        while q:
             row, col = q.pop(0)  # Remove e retorna o primeiro elemento da fila
 
             # Se o ponto atual é o destino, retorna a matriz de caminhos anteriores
@@ -39,6 +39,7 @@ class BFS:
                     q.append((next_row, next_col))  # Adiciona o proximo ponto à fila
                     self.visited[next_row][next_col] = True  # Marca o proximo ponto como visitada
                     self.prev[next_row][next_col] = (row, col)  # Armazena a ponto atual como a ponto anterior para o proximo ponto
+
         return None  # Se não encontrar um caminho, retorna None
 
     # Método para reconstruir o caminho do destino até o início
@@ -48,8 +49,6 @@ class BFS:
         # Continua até que o início seja alcançado
         while (row, col) != (start_row, start_col):
             path.append((row, col))  # Adiciona o ponto atual ao caminho
-            if self.prev[row][col] is None:  # verifica se chegamos a um ponto sem predecessor
-                return []
             row, col = self.prev[row][col]  # Move para a ponto anterior no caminho
         path.append((start_row, start_col))  # Adiciona a ponto de início ao caminho
         return path[::-1]  # Retorna o caminho invertido (do início para o fim)
@@ -96,10 +95,10 @@ for i in range(rows):
 #Start Timmer
 start_time = time.time()
 
-print("\Procura do caminho um caminho ROBOT TO PRODUCT:")
+print("Procura do caminho um caminho ROBOT TO PRODUCT:")
 Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col)  # Procura o caminho do robô até o produto
 if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
-    print("Caminho encontrado:")
+    print("\033[92mCaminho encontrado:\033[0m")
     for row, col in Robot2Product_path:  # Para cada ponto no caminho
         if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
             matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
@@ -110,12 +109,12 @@ if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
         for row in matrizProcura:
             file.write(' '.join(row) + '\n')  
 else:
-    print("Caminho não encontrado.")  # Se não houver caminho
+    print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 #End Timmer
 end_time = time.time()
 #Saber tempo de processamento
 execution_time = end_time - start_time
-print("Tempo de Procura:",execution_time)
+print("Tempo de Procura: {:.15f} segundos".format(execution_time))
 
 # Atualiza a matriz do objeto para a próxima busca
 bfs_search.matriz= matrizProcura
@@ -124,10 +123,10 @@ bfs_search.matriz= matrizProcura
 start_time = time.time()
 
 # Procura do caminho do produto até a saída
-print("\Procura do caminho um caminho PRODUCT TO OUTPUT :")
+print("Procura do caminho um caminho PRODUCT TO OUTPUT :")
 Product2Output_path = bfs_search.search(product_row, product_col, output_row, output_col)  # Procura o caminho do produto até a saída
 if len(Product2Output_path) > 0:  # Se um caminho foi encontrado
-    print("Caminho encontrado:")
+    print("\033[92mCaminho encontrado:\033[0m")
     for row, col in Product2Output_path:  # Para cada ponto no caminho
         if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
             matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
@@ -138,10 +137,10 @@ if len(Product2Output_path) > 0:  # Se um caminho foi encontrado
         for row in matrizProcura:
             file.write(' '.join(row) + '\n') 
 else:
-    print("Caminho não encontrado.")  # Se não houver caminho
+    print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 
 #End Timmer
 end_time = time.time()
 #Saber tempo de processamento
 execution_time = end_time - start_time
-print("Tempo de Procura:",execution_time)
+print("Tempo de Procura: {:.15f} segundos".format(execution_time))
