@@ -9,19 +9,24 @@ class BFS:
         self.visited = [[False for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para rastrear se cada posição que foi visitada
         self.prev = [[None for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para armazenar a ponto anterior no caminho mais curto
 
+    def clean(self):
+        self.visited = [[False for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para rastrear se cada posição que foi visitada
+        self.prev = [[None for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para armazenar a ponto anterior no caminho mais curto
+
+
     # Método que executa a busca em largura (BFS) a partir do ponto inical
-    def solve(self, start_row, start_col):
+    def solve(self, start_row, start_col,searchType):
         q = [(start_row, start_col)]  # Um vector que contém os pontos a serem visitados, começando pelo ponto de início
         self.visited[start_row][start_col] = True  # Marca a ponto de início como visitada
+        
 
         # Continua até que todas os pontos possíveis tenham sido visitadas
         while q:
             row, col = q.pop(0)  # Remove e retorna o primeiro elemento da fila
 
             # Se o ponto atual é o destino, retorna a matriz de caminhos anteriores
-            if self.matriz[row][col] == 'P' or self.matriz[row][col] == 'O':
+            if self.matriz[row][col] == searchType:
                 return self.prev
-
             # Verifica todas as quatro direções a partir da ponto atual
             for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
                 
@@ -54,8 +59,8 @@ class BFS:
         return path[::-1]  # Retorna o caminho invertido (do início para o fim)
 
     # Método para iniciar a busca em largura e reconstruir o caminho, se encontrado
-    def search(self, start_row, start_col, end_row, end_col):
-        prev = self.solve(start_row, start_col)  # Realiza a busca em largura
+    def search(self, start_row, start_col, end_row, end_col,searchType):
+        prev = self.solve(start_row, start_col,searchType)  # Realiza a busca em largura
         if prev is None:
             return []
         # Se um caminho for encontrado, reconstrói e retorna o caminho
@@ -96,7 +101,7 @@ for i in range(rows):
 start_time = time.time()
 
 print("Procura do caminho um caminho ROBOT TO PRODUCT:")
-Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col)  # Procura o caminho do robô até o produto
+Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
 if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
     for row, col in Robot2Product_path:  # Para cada ponto no caminho
@@ -118,13 +123,14 @@ print("Tempo de Procura: {:.15f} segundos".format(execution_time))
 
 # Atualiza a matriz do objeto para a próxima busca
 bfs_search.matriz= matrizProcura
+bfs_search.clean()
 
 #Start Timmer
 start_time = time.time()
 
 # Procura do caminho do produto até a saída
 print("Procura do caminho um caminho PRODUCT TO OUTPUT :")
-Product2Output_path = bfs_search.search(product_row, product_col, output_row, output_col)  # Procura o caminho do produto até a saída
+Product2Output_path = bfs_search.search(product_row, product_col, output_row, output_col,'O')  # Procura o caminho do produto até a saída
 if len(Product2Output_path) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
     for row, col in Product2Output_path:  # Para cada ponto no caminho

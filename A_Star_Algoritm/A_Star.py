@@ -55,7 +55,8 @@ def a_star(matriz, start, end):
 
         # Gera os possíveis movimentos
         # for new_position in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-        for new_position in [(0, -1), (0, 1),(-1, 0), (1, 0), ]:
+        
+        for new_position in [(0, -1), (0, 1),(-1, 0), (1, 0) ]:
             #(-1, 0): Este é um movimento para cima.
             #(1, 0): Este é um movimento para baixo.
             #(0, -1): Este é um movimento para a esquerda.
@@ -140,7 +141,7 @@ for i in range(rows):
         if matrizProcura[i][j] == 'R':
             robot_point = (i, j)  
         if matrizProcura[i][j] == 'P':
-            product_point = (i, j)  #
+            product_point = (i, j) 
         if matrizProcura[i][j] == 'O':
             output_point = (i, j) 
 
