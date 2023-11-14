@@ -1,6 +1,7 @@
 import heapq
 import time
 
+
 # Define uma classe para representar os nós
 class Node:
     # Construtor da classe
@@ -24,7 +25,7 @@ class Node:
 def compute_cost(last_direction, next_direction):
     cost = 1  # Custo base do movimento
     # Se mudar de direção, adiciona um custo adicional
-    if last_direction and last_direction != next_direction:
+    if last_direction != next_direction:
         cost += 2
     return cost
 

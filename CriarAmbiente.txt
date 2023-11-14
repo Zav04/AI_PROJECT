@@ -1,0 +1,5 @@
+python -m venv AI
+
+.\AI\Scripts\activate
+
+pip install pygame
