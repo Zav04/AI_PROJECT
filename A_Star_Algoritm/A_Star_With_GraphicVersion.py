@@ -137,11 +137,9 @@ def compute_cost(last_direction, next_direction):
 
 # Função principal do algoritmo
 def a_star(matriz, start, end):
-    i_Manhattan=0
     start_node = Node(start)  # Inicializa o nó de início
     end_node = Node(end)  # Inicializa o nó de destino
     
-    i_Manhattan=end_node.position[0]-start_node.position[0]+end_node.position[1]-start_node.position[1]
     open_list = []  # Lista dos nós a serem avaliados
     closed_set = set()  # Conjunto dos nós já avaliados
 
@@ -161,16 +159,12 @@ def a_star(matriz, start, end):
             while current_node is not None:
                 path.append((current_node.position, current_node.direction))
                 current_node = current_node.parent                
-            #texto="Caminho Encontrado\nEuristica\nF=",
-            #desenha_InfoBox(screen, "Caminho Encontrado", (width//2, height//2), (100, 50))
             return path[::-1]  # Retorna o caminho invertido
 
         # Marca o nó atual como visitado
         closed_set.add(current_node.position)
 
-        # Gera os possíveis movimentos
-        # for new_position in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-        
+        # Gera os possíveis movimentos        
         for new_position in [(0, -1), (0, 1),(-1, 0), (1, 0) ]:
             #(-1, 0): Este é um movimento para cima.
             #(1, 0): Este é um movimento para baixo.

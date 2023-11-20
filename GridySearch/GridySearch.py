@@ -195,8 +195,7 @@ def a_star(matriz, start, end):
             if new_node.position in closed_set:
                 continue
 
-            # Calcula o valor de g para o novo nó. O valor g é o custo do caminho desde o nó de partida até o nó atual.
-            # Este custo é a soma do valor g do nó atual (current_node.g) com o custo para se mover do nó atual para o novo nó (seu vizinho).
+            #Calculo do custo será sempre zero apenas será calculado o valor heurístico
             new_node.g = 0
             #new_node.g=current_node.g + compute_cost(current_node.direction, new_position)
             # Calcula o valor heurístico h para o novo nó. O valor h é uma estimativa do custo do nó atual até o nó de destino.

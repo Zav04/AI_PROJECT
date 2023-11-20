@@ -50,13 +50,29 @@ class BFS:
     # Método para reconstruir o caminho do destino até o início
     def reconstruct_path(self, start_row, start_col, end_row, end_col):
         path = []  # Lista para armazenar o caminho reconstruído
-        row, col = end_row, end_col  # Começa pelo fim
+        cost = 0  # Inicializa o custo
+        last_direction = (0, 0)  # Direção inicial neutra
+
+        current_row, current_col = end_row, end_col  # Começa pelo fim
         # Continua até que o início seja alcançado
-        while (row, col) != (start_row, start_col):
-            path.append((row, col))  # Adiciona o ponto atual ao caminho
-            row, col = self.prev[row][col]  # Move para a ponto anterior no caminho
+        while (current_row, current_col) != (start_row, start_col):
+            path.append((current_row, current_col))  # Adiciona o ponto atual ao caminho
+            
+            # Obtém o próximo ponto no caminho
+            next_row, next_col = self.prev[current_row][current_col]
+
+            # Calcula a direção do movimento atual
+            direction = (current_row - next_row, current_col - next_col)
+
+            # Calcula o custo para mover da direção anterior para a atual
+            cost += compute_cost(last_direction, direction)
+            last_direction = direction  # Atualiza a última direção
+
+            # Move para o ponto anterior no caminho
+            current_row, current_col = next_row, next_col
+
         path.append((start_row, start_col))  # Adiciona a ponto de início ao caminho
-        return path[::-1]  # Retorna o caminho invertido (do início para o fim)
+        return path[::-1], cost  # Retorna o caminho invertido (do início para o fim)
 
     # Método para iniciar a busca em largura e reconstruir o caminho, se encontrado
     def search(self, start_row, start_col, end_row, end_col,searchType):
@@ -65,6 +81,14 @@ class BFS:
             return []
         # Se um caminho for encontrado, reconstrói e retorna o caminho
         return self.reconstruct_path(start_row, start_col, end_row, end_col)
+
+# Função para calcular o custo do movimento baseado na direção
+def compute_cost(last_direction, next_direction):
+    cost = 1
+    # Se mudar de direção, adiciona um custo adicional
+    if last_direction != next_direction:
+        cost += 1
+    return cost
 
 #Abrir o Ficheiro e ler todas as linhas
 with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
@@ -102,19 +126,18 @@ start_time = time.time()
 
 print("Procura do caminho um caminho ROBOT TO PRODUCT:")
 Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
-if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
+if len(Robot2Product_path[0]) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
+    print("Custo:",Robot2Product_path[1])
     # for row, col in Robot2Product_path:  # Para cada ponto no caminho
     #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
     #         matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
-    # # for row in matrizProcura:
-    # #     print(' '.join(row))  # Print do labirinto com o caminho marcado
-    # # Escreve o labirinto com o caminho do robot
     # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
     #     for row in matrizProcura:
     #         file.write(' '.join(row) + '\n')  
 else:
     print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
+    
 #End Timmer
 end_time = time.time()
 #Saber tempo de processamento
@@ -131,17 +154,18 @@ start_time = time.time()
 # Procura do caminho do produto até a saída
 print("Procura do caminho um caminho PRODUCT TO OUTPUT :")
 Product2Output_path = bfs_search.search(product_row, product_col, output_row, output_col,'O')  # Procura o caminho do produto até a saída
-if len(Product2Output_path) > 0:  # Se um caminho foi encontrado
+if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
-    # for row, col in Product2Output_path:  # Para cada ponto no caminho
-    #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
-    #         matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
-    # # for row in matrizProcura:
-    # #     print(' '.join(row))  # Print do labirinto com o caminho marcado
-    # # Escreve o labirinto com o caminho do Output
-    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
-    #     for row in matrizProcura:
-    #         file.write(' '.join(row) + '\n') 
+    print("Custo:",Product2Output_path[1])
+    for row, col in Product2Output_path[0]:  # Para cada ponto no caminho
+        if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
+            matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
+    # for row in matrizProcura:
+    #     print(' '.join(row))  # Print do labirinto com o caminho marcado
+    # Escreve o labirinto com o caminho do Output
+    with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
+        for row in matrizProcura:
+            file.write(' '.join(row) + '\n') 
 else:
     print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 
