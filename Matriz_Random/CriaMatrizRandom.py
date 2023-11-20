@@ -38,7 +38,7 @@ def create_matrix(rows, cols, percentageobstacles):
 start_time = time.time()
 
 # Cria a matriz com X linhas e Y colunas, com XX% de '#' nas linhas e nas colunas
-matrix = create_matrix(100, 100, 30)
+matrix = create_matrix(25, 25, 20)
 
 # Print a matriz, linha por linha
 # for row in matrix:

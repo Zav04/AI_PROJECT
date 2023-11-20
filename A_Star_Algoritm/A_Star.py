@@ -77,8 +77,6 @@ def a_star(matriz, start, end):
             
             # Cria um novo nó e define seu 'g', 'h', e 'f'
             new_node = Node(node_position, current_node, direction=new_position)
-            new_node.g = current_node.g + compute_cost(current_node.direction, new_position)
-
             # Se o nó já foi avaliado então passa para outra iteração de movimento
             if new_node.position in closed_set:
                 continue
@@ -113,16 +111,16 @@ def add_to_open(open_list, neighbor):
             return False
     return True
 
-# Função para converter direção em letra
-def direction_to_write(direction):
-    if direction == (-1, 0):
-        return '^'
-    elif direction == (1, 0):
-        return 'v'
-    elif direction == (0, -1):
-        return '<'
-    elif direction == (0, 1):
-        return '>'
+# # Função para converter direção em letra
+# def direction_to_write(direction):
+#     if direction == (-1, 0):
+#         return '^'
+#     elif direction == (1, 0):
+#         return 'v'
+#     elif direction == (0, -1):
+#         return '<'
+#     elif direction == (0, 1):
+#         return '>'
 
 # Carrega a matriz do arquivo
 with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
@@ -157,17 +155,17 @@ caminho = a_star(matrizProcura, robot_point, product_point)
 if(caminho is not None):
     if len(caminho) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
-        for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
-            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-                #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-                if(direcao is None):
-                    continue
-                matrizProcura[row][col] = direction_to_write(direcao)
-        # for row in matrizProcura:
-        #     print(' '.join(row))
-        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
-            for row in matrizProcura:
-                file.write(' '.join(row) + '\n')
+        # for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
+        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+        #         #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+        #         if(direcao is None):
+        #             continue
+        #         matrizProcura[row][col] = direction_to_write(direcao)
+        # # for row in matrizProcura:
+        # #     print(' '.join(row))
+        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n')
 else:
     print("\033[91mCaminho não encontrado\033[0m")
 
@@ -186,17 +184,17 @@ caminho = a_star(matrizProcura, product_point, output_point)
 if(caminho is not None):
     if len(caminho) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
-        for (row, col), direcao in caminho:
-            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-            #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-                if(direcao is None):
-                    continue
-                matrizProcura[row][col] = direction_to_write(direcao)
-        # for row in matrizProcura:
-        #     print(' '.join(row))
-        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
-            for row in matrizProcura:
-                file.write(' '.join(row) + '\n')
+        # for (row, col), direcao in caminho:
+        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+        #     #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+        #         if(direcao is None):
+        #             continue
+        #         matrizProcura[row][col] = direction_to_write(direcao)
+        # # for row in matrizProcura:
+        # #     print(' '.join(row))
+        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n')
 else:
     print("\033[91mCaminho não encontrado\033[0m")
 

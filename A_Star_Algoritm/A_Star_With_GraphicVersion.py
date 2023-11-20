@@ -1,6 +1,7 @@
 import heapq
 import time
 import pygame
+import math
 
 ##########################PYGAMES FUNCTIONS#######################################
 # Definindo cores
@@ -21,11 +22,25 @@ screen = pygame.display.set_mode((width, height))
 # Fonte para o texto do botão
 fonte = pygame.font.Font(None, 36)
 
-# Função para desenhar o botão
-def desenha_botao(tela, texto, posicao, tamanho):
-    texto_renderizado = fonte.render(texto, True, COLOR_Preto)
-    pygame.draw.rect(tela, COLOR_Branco, (*posicao, *tamanho))
-    tela.blit(texto_renderizado, (posicao[0] + 10, posicao[1] + 10))
+def desenha_InfoBox(Screen, texto, posicao, tamanho):
+    # Define a cor do texto e do fundo
+    cor_texto = COLOR_Branco  
+    cor_fundo = COLOR_Preto 
+
+    # Desenha a caixa de texto
+    pygame.draw.rect(Screen, cor_fundo, (*posicao, *tamanho))
+
+    # Divide o texto em linhas
+    linhas = texto.split('\n')
+    linha_altura = fonte.get_height()
+
+    # Renderiza cada linha do texto dentro da caixa
+    for i, linha in enumerate(linhas):
+        texto_renderizado = fonte.render(linha, True, cor_texto)
+        # Ajusta a posição do texto para cada linha
+        Screen.blit(texto_renderizado, (posicao[0] + 10, posicao[1] + 10 + i * linha_altura))
+
+
 
 #Printar o mapa na janela do pygames 
 def draw_matriz_init(screen, matriz, cell_size, start=None, end=None, path=None, visited=None):
@@ -75,20 +90,20 @@ def draw_matriz_Path(screen, matriz, cell_size, start=None, end=None, path=None,
 fonte = pygame.font.Font(None, 36)
 
 # Função para desenhar o botão
-def desenha_botao(tela, texto, posicao, tamanho):
+def desenha_botao(screen, texto, posicao, tamanho):
     
     # Desenha a borda (um retângulo maior atrás do botão)
     rect_borda = pygame.Rect(posicao[0] - 5, posicao[1] - 5, tamanho[0] + 2*5, tamanho[1] + 2*5)
-    pygame.draw.rect(tela, COLOR_Preto, rect_borda)
+    pygame.draw.rect(screen, COLOR_Preto, rect_borda)
 
     # Desenha o botão
     rect_botao = pygame.Rect(posicao[0], posicao[1], tamanho[0], tamanho[1])
-    pygame.draw.rect(tela, COLOR_Preto, rect_botao)
+    pygame.draw.rect(screen, COLOR_Preto, rect_botao)
 
     # Adiciona o texto ao botão
     texto_renderizado = fonte.render(texto, True, COLOR_Branco)
     text_rect = texto_renderizado.get_rect(center=rect_botao.center)
-    tela.blit(texto_renderizado, text_rect)
+    screen.blit(texto_renderizado, text_rect)
 ##########################PYGAMES FUNCTIONS#######################################
 
 
@@ -122,9 +137,11 @@ def compute_cost(last_direction, next_direction):
 
 # Função principal do algoritmo
 def a_star(matriz, start, end):
+    i_Manhattan=0
     start_node = Node(start)  # Inicializa o nó de início
     end_node = Node(end)  # Inicializa o nó de destino
-
+    
+    i_Manhattan=end_node.position[0]-start_node.position[0]+end_node.position[1]-start_node.position[1]
     open_list = []  # Lista dos nós a serem avaliados
     closed_set = set()  # Conjunto dos nós já avaliados
 
@@ -143,7 +160,9 @@ def a_star(matriz, start, end):
             path = []
             while current_node is not None:
                 path.append((current_node.position, current_node.direction))
-                current_node = current_node.parent
+                current_node = current_node.parent                
+            #texto="Caminho Encontrado\nEuristica\nF=",
+            #desenha_InfoBox(screen, "Caminho Encontrado", (width//2, height//2), (100, 50))
             return path[::-1]  # Retorna o caminho invertido
 
         # Marca o nó atual como visitado
@@ -172,8 +191,6 @@ def a_star(matriz, start, end):
             
             # Cria um novo nó e define seu 'g', 'h', e 'f'
             new_node = Node(node_position, current_node, direction=new_position)
-            new_node.g = current_node.g + compute_cost(current_node.direction, new_position)
-
             # Se o nó já foi avaliado então passa para outra iteração de movimento
             if new_node.position in closed_set:
                 continue
@@ -191,13 +208,13 @@ def a_star(matriz, start, end):
             
             draw_matriz_Path(screen, matriz, cell_size, visited=closed_set)
             pygame.display.flip()
-            # Se o nó é uma nova adição ao vector, adiciona
+            # Se o nó é uma nova adição ao vector
             if add_to_open(open_list, new_node):
                 heapq.heappush(open_list, new_node)
 
     return None  # Retorna None se não encontrar um caminho
 
-# Função para atualizar ou adicionar um nó ao vector
+#OpenList é um conjunto de nós que foram descobertos, mas ainda não explorados.
 def add_to_open(open_list, neighbor):
     for node in open_list:
         if neighbor == node:
@@ -209,17 +226,6 @@ def add_to_open(open_list, neighbor):
                 node.direction = neighbor.direction
             return False
     return True
-
-# Função para converter direção em letra
-def direction_to_write(direction):
-    if direction == (-1, 0):
-        return '^'
-    elif direction == (1, 0):
-        return 'v'
-    elif direction == (0, -1):
-        return '<'
-    elif direction == (0, 1):
-        return '>'
 
 # Carrega a matriz do arquivo
 with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
@@ -259,17 +265,17 @@ caminho = a_star(matrizProcura, robot_point, product_point)
 if(caminho is not None):
     if len(caminho) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
-        for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
-            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-                #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-                if(direcao is None):
-                    continue
-                matrizProcura[row][col] = direction_to_write(direcao)
-        # for row in matrizProcura:
-        #     print(' '.join(row))
-        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
-            for row in matrizProcura:
-                file.write(' '.join(row) + '\n')
+        # for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
+        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+        #         #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+        #         if(direcao is None):
+        #             continue
+        #         matrizProcura[row][col] = direction_to_write(direcao)
+        # # for row in matrizProcura:
+        # #     print(' '.join(row))
+        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n')
 else:
     print("\033[91mCaminho não encontrado\033[0m")
 
@@ -306,17 +312,17 @@ caminho = a_star(matrizProcura, product_point, output_point)
 if(caminho is not None):
     if len(caminho) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
-        for (row, col), direcao in caminho:
-            if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-            #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-                if(direcao is None):
-                    continue
-                matrizProcura[row][col] = direction_to_write(direcao)
-        # for row in matrizProcura:
-        #     print(' '.join(row))
-        with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
-            for row in matrizProcura:
-                file.write(' '.join(row) + '\n')
+        # for (row, col), direcao in caminho:
+        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+        #     #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+        #         if(direcao is None):
+        #             continue
+        #         matrizProcura[row][col] = direction_to_write(direcao)
+        # # for row in matrizProcura:
+        # #     print(' '.join(row))
+        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n')
 else:
     print("\033[91mCaminho não encontrado\033[0m")
 

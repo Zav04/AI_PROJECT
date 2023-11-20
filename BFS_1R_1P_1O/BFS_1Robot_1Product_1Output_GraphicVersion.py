@@ -20,12 +20,6 @@ screen = pygame.display.set_mode((width, height))
 # Fonte para o texto do botão
 fonte = pygame.font.Font(None, 36)
 
-# Função para desenhar o botão
-def desenha_botao(tela, texto, posicao, tamanho):
-    texto_renderizado = fonte.render(texto, True, COLOR_Preto)
-    pygame.draw.rect(tela, COLOR_Branco, (*posicao, *tamanho))
-    tela.blit(texto_renderizado, (posicao[0] + 10, posicao[1] + 10))
-
 #Printar o mapa na janela do pygames 
 def draw_matriz_init(screen, matriz, cell_size, start=None, end=None, path=None, visited=None):
     # Desenha os retângulos
@@ -212,12 +206,12 @@ print("Procura do caminho um caminho ROBOT TO PRODUCT:")
 Robot2Product_path = bfs_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
 if len(Robot2Product_path) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
-    for row, col in Robot2Product_path:  # Para cada ponto no caminho
-        if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
-            matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
-    with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
-        for row in matrizProcura:
-            file.write(' '.join(row) + '\n')  
+    # for row, col in Robot2Product_path:  # Para cada ponto no caminho
+    #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
+    #         matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
+    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
+    #     for row in matrizProcura:
+    #         file.write(' '.join(row) + '\n')  
 else:
     print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 #End Timmer
