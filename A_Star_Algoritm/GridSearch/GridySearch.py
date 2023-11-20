@@ -197,7 +197,8 @@ def a_star(matriz, start, end):
 
             # Calcula o valor de g para o novo nó. O valor g é o custo do caminho desde o nó de partida até o nó atual.
             # Este custo é a soma do valor g do nó atual (current_node.g) com o custo para se mover do nó atual para o novo nó (seu vizinho).
-            new_node.g=current_node.g + compute_cost(current_node.direction, new_position)
+            new_node.g = 0
+            #new_node.g=current_node.g + compute_cost(current_node.direction, new_position)
             # Calcula o valor heurístico h para o novo nó. O valor h é uma estimativa do custo do nó atual até o nó de destino.
             # Neste caso, a heurística usada é a distância de Manhattan, que é a soma das diferenças absolutas das coordenadas x e y entre o nó atual e o nó de destino.
             new_node.h = abs(new_node.position[0] - end_node.position[0]) + abs(new_node.position[1] - end_node.position[1])

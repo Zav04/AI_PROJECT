@@ -119,7 +119,6 @@ class BFS:
                 return self.prev
             # Verifica todas as quatro direções a partir da ponto atual
             for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                
                 #(-1, 0): Este é um movimento para cima.
                 #(1, 0): Este é um movimento para baixo.
                 #(0, -1): Este é um movimento para a esquerda.
