@@ -1,5 +1,10 @@
 import heapq
 import time
+import time
+import pandas as pd
+from openpyxl import Workbook
+import glob
+import os
 
 
 # Define uma classe para representar os nós
@@ -46,11 +51,11 @@ def a_star(matriz, start, end):
         # Se este nó é o destino, reconstrói o caminho
         if current_node == end_node:
             path = []
-            while current_node is not None:
+            cost=current_node.g 
+            while current_node is not None:  
                 path.append((current_node.position, current_node.direction))
-                current_node = current_node.parent
-            return path[::-1]  # Retorna o caminho invertido
-
+                current_node = current_node.parent   
+            return path[::-1],cost  # Retorna o caminho invertido
         # Marca o nó atual como visitado
         closed_set.add(current_node.position)
 
@@ -122,84 +127,112 @@ def add_to_open(open_list, neighbor):
 #     elif direction == (0, 1):
 #         return '>'
 
-# Carrega a matriz do arquivo
-with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
-    matrizProcura = [linha.strip().split() for linha in f]
+base_path = './Matriz_Random'
+
+# Constrói o padrão de busca para encontrar todos os arquivos .txt em todos os subdiretórios
+search_pattern = os.path.join(base_path, '**', '*.txt')
+
+# Usa glob com a opção recursive=True para buscar em todos os subdiretórios
+file_paths = glob.glob(search_pattern, recursive=True)
+# Lista para armazenar os resultados
+results = []
+
+for file_path in file_paths:
+    #Abrir o Ficheiro e ler todas as linhas
+    with open(file_path, 'r') as f:
+        matrizProcura = [linha.strip().split() for linha in f] 
 
 
-# Obter o número de linhas e colunas do labirinto    
-rows = len(matrizProcura)
-cols = len(matrizProcura[0])
+    # Obter o número de linhas e colunas do labirinto    
+    rows = len(matrizProcura)
+    cols = len(matrizProcura[0])
 
-# Inicializar variáveis para as coordenadas do robô, produto e saída
-robot_point,product_point,output_point = 0,0,0
+    # Inicializar variáveis para as coordenadas do robô, produto e saída
+    robot_point,product_point,output_point = 0,0,0
 
-# Procurar as coordenadas do robô, produto e saída no labirinto
-for i in range(rows):
-    for j in range(cols):
-        if matrizProcura[i][j] == 'R':
-            robot_point = (i, j)  
-        if matrizProcura[i][j] == 'P':
-            product_point = (i, j) 
-        if matrizProcura[i][j] == 'O':
-            output_point = (i, j) 
+    # Procurar as coordenadas do robô, produto e saída no labirinto
+    for i in range(rows):
+        for j in range(cols):
+            if matrizProcura[i][j] == 'R':
+                robot_point = (i, j)  
+            if matrizProcura[i][j] == 'P':
+                product_point = (i, j) 
+            if matrizProcura[i][j] == 'O':
+                output_point = (i, j) 
 
-#Start Timmer
-start_time = time.time()
-print("Procura do caminho um caminho ROBOT TO PRODUCT:")
+    #Start Timmer
+    start_time = time.time()
+    print("Procura do caminho um caminho ROBOT TO PRODUCT:")
 
-# Procura o caminho do robô até o produto
-caminho = a_star(matrizProcura, robot_point, product_point)
+    # Procura o caminho do robô até o produto
+    caminhoRobot2Product = a_star(matrizProcura, robot_point, product_point)
 
-# Se um caminho foi encontrado
-if(caminho is not None):
-    if len(caminho) > 0:
-        print("\033[92mCaminho encontrado:\033[0m")
-        # for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
-        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-        #         #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-        #         if(direcao is None):
-        #             continue
-        #         matrizProcura[row][col] = direction_to_write(direcao)
-        # # for row in matrizProcura:
-        # #     print(' '.join(row))
-        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
-        #     for row in matrizProcura:
-        #         file.write(' '.join(row) + '\n')
-else:
-    print("\033[91mCaminho não encontrado\033[0m")
+    # Se um caminho foi encontrado
+    if(caminhoRobot2Product is not None):
+        if len(caminhoRobot2Product[0]) > 0:
+            print("\033[92mCaminho encontrado:\033[0m")
+            print("Custo:",caminhoRobot2Product[1])
+            # for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
+            #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+            #         #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+            #         if(direcao is None):
+            #             continue
+            #         matrizProcura[row][col] = direction_to_write(direcao)
+            # # for row in matrizProcura:
+            # #     print(' '.join(row))
+            # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_ROBOT_VERSION.txt", "w") as file:
+            #     for row in matrizProcura:
+            #         file.write(' '.join(row) + '\n')
+    else:
+        print("\033[91mCaminho não encontrado\033[0m")
 
-#End Timmer
-end_time = time.time()
-#Saber tempo de processamento
-execution_time = end_time - start_time
-print("Tempo de Procura: {:.15f} segundos".format(execution_time))
+    #End Timmer
+    end_time = time.time()
+    #Saber tempo de processamento
+    execution_time_rp = end_time - start_time
+    print("Tempo de Procura: {:.15f} segundos".format(execution_time_rp))
 
 
-start_time = time.time()
-print("Procura do caminho um caminho PRODUCT TO OUPUT:")
+    start_time = time.time()
+    print("Procura do caminho um caminho PRODUCT TO OUPUT:")
 
-caminho = a_star(matrizProcura, product_point, output_point)
+    caminhoProduct2Output = a_star(matrizProcura, product_point, output_point)
 
-if(caminho is not None):
-    if len(caminho) > 0:
-        print("\033[92mCaminho encontrado:\033[0m")
-        # for (row, col), direcao in caminho:
-        #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
-        #     #Se for a posição inical não existe direção por isso tem de se passar para o proximo
-        #         if(direcao is None):
-        #             continue
-        #         matrizProcura[row][col] = direction_to_write(direcao)
-        # # for row in matrizProcura:
-        # #     print(' '.join(row))
-        # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
-        #     for row in matrizProcura:
-        #         file.write(' '.join(row) + '\n')
-else:
-    print("\033[91mCaminho não encontrado\033[0m")
+    if(caminhoProduct2Output is not None):
+        if len(caminhoProduct2Output[0]) > 0:
+            print("\033[92mCaminho encontrado:\033[0m")
+            print("Custo:",caminhoProduct2Output[1])
+            # for (row, col), direcao in caminho:
+            #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
+            #     #Se for a posição inical não existe direção por isso tem de se passar para o proximo
+            #         if(direcao is None):
+            #             continue
+            #         matrizProcura[row][col] = direction_to_write(direcao)
+            # # for row in matrizProcura:
+            # #     print(' '.join(row))
+            # with open("A_Star_Algoritm/Output/MatrizRandom_A_STAR_OUTPUT_EXIT_VERSION.txt", "w") as file:
+            #     for row in matrizProcura:
+            #         file.write(' '.join(row) + '\n')
+    else:
+        print("\033[91mCaminho não encontrado\033[0m")
+    
+    #End Timmer
+    end_time = time.time()
+    #Saber tempo de processamento
+    execution_time_po = end_time - start_time
+    print("Tempo de Procura: {:.15f} segundos".format(execution_time_po))
+        
+    results.append({
+                    'File Path': file_path,
+                    'Cost Robot to Product': caminhoRobot2Product[1] if caminhoRobot2Product else None,
+                    'Cost Product to Output': caminhoProduct2Output[1] if caminhoProduct2Output else None,
+                    'Execution Time Robot to Product': execution_time_rp,
+                    'Execution Time Product to Output': execution_time_po
+                })
+    
+# Cria um DataFrame com os resultados
+df_results = pd.DataFrame(results)
 
-#End Timmer
-end_time = time.time()
-#Saber tempo de processamento
-execution_time = end_time - start_time
-print("Tempo de Procura: {:.15f} segundos".format(execution_time))
+# Exporta o DataFrame para um arquivo Excel
+df_results.to_excel('A_STAR_Results.xlsx', index=False)
+
