@@ -54,11 +54,15 @@ def a_star(matriz, start, end):
         # Se este nó é o destino, reconstrói o caminho
         if current_node == end_node:
             path = []
-            cost=current_node.g 
+            cost=0
             while current_node is not None:  
                 path.append((current_node.position, current_node.direction))
+                if current_node.parent and current_node.direction:
+                    cost = cost + compute_cost(current_node.parent.direction, current_node.direction)
                 current_node = current_node.parent   
-            return path[::-1],cost  # Retorna o caminho invertido
+            return path[::-1],cost
+        
+# Retorna o caminho invertido
         # Marca o nó atual como visitado
         closed_set.add(current_node.position)  # Retorna o caminho invertido
 

@@ -137,14 +137,11 @@ def compute_cost(last_direction, next_direction):
 
 # Função principal do algoritmo
 def a_star(matriz, start, end):
-    i_Manhattan=0
     start_node = Node(start)  # Inicializa o nó de início
     end_node = Node(end)  # Inicializa o nó de destino
     
-    i_Manhattan=end_node.position[0]-start_node.position[0]+end_node.position[1]-start_node.position[1]
     open_list = []  # Lista dos nós a serem avaliados
     closed_set = set()  # Conjunto dos nós já avaliados
-    cost=0
 
     heapq.heappush(open_list, start_node)  # Adiciona o nó inicial ao vector
     # Enquanto houver nós na lista aberta
@@ -153,26 +150,24 @@ def a_star(matriz, start, end):
         #pygame.time.delay(500)
         draw_matriz_Path(screen, matriz, cell_size, start=robot_point, end=product_point, visited=closed_set)
         pygame.display.flip()
-
+        
         current_node = heapq.heappop(open_list) 
         closed_set.add(current_node.position)
         # Se este nó é o destino, reconstrói o caminho
         if current_node == end_node:
             path = []
-            #TODO cost=cost+compute_cost(current_node.direction, new_position)
+            cost=0
             while current_node is not None:  
                 path.append((current_node.position, current_node.direction))
+                if current_node.parent and current_node.direction:
+                    cost = cost + compute_cost(current_node.parent.direction, current_node.direction)
                 current_node = current_node.parent   
-            return path[::-1],cost  # Retorna o caminho invertido
-        # Marca o nó atual como visitado
-        closed_set.add(current_node.position)  # Retorna o caminho invertido
+            return path[::-1],cost
 
         # Marca o nó atual como visitado
         closed_set.add(current_node.position)
 
-        # Gera os possíveis movimentos
-        # for new_position in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-        
+        # Gera os possíveis movimentos        
         for new_position in [(0, -1), (0, 1),(-1, 0), (1, 0) ]:
             #(-1, 0): Este é um movimento para cima.
             #(1, 0): Este é um movimento para baixo.
@@ -197,9 +192,9 @@ def a_star(matriz, start, end):
             if new_node.position in closed_set:
                 continue
 
-            #Calculo do custo será sempre zero apenas será calculado o valor heurístico
-            new_node.g = 0
-            #new_node.g=current_node.g + compute_cost(current_node.direction, new_position)
+            # Calcula o valor de g para o novo nó. O valor g é o custo do caminho desde o nó de partida até o nó atual.
+            # Este custo é a soma do valor g do nó atual (current_node.g) com o custo para se mover do nó atual para o novo nó (seu vizinho).
+            new_node.g=0
             # Calcula o valor heurístico h para o novo nó. O valor h é uma estimativa do custo do nó atual até o nó de destino.
             # Neste caso, a heurística usada é a distância de Manhattan, que é a soma das diferenças absolutas das coordenadas x e y entre o nó atual e o nó de destino.
             new_node.h = abs(new_node.position[0] - end_node.position[0]) + abs(new_node.position[1] - end_node.position[1])
@@ -215,6 +210,7 @@ def a_star(matriz, start, end):
                 heapq.heappush(open_list, new_node)
 
     return None  # Retorna None se não encontrar um caminho
+
 
 #OpenList é um conjunto de nós que foram descobertos, mas ainda não explorados.
 def add_to_open(open_list, neighbor):
