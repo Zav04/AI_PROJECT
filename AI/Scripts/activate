@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\IPCA\OneDrive - Instituto Politécnico do Cávado e do Ave\EIM\3Ano\1Semestre\Inteligencia Artificial\TrabalhoPratico\Code\AI"
+VIRTUAL_ENV="C:\Users\Bruno Oliveira\Desktop\Code\AI"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

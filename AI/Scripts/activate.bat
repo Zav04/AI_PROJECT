@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\IPCA\OneDrive - Instituto Politécnico do Cávado e do Ave\EIM\3Ano\1Semestre\Inteligencia Artificial\TrabalhoPratico\Code\AI
+set VIRTUAL_ENV=C:\Users\Bruno Oliveira\Desktop\Code\AI
 
 if not defined PROMPT set PROMPT=$P$G
 

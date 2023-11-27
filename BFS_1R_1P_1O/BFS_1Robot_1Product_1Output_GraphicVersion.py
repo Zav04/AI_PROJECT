@@ -287,9 +287,9 @@ if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
     # for row in matrizProcura:
     #     print(' '.join(row))  # Print do labirinto com o caminho marcado
     # Escreve o labirinto com o caminho do Output
-    with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
-        for row in matrizProcura:
-            file.write(' '.join(row) + '\n') 
+    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
+    #     for row in matrizProcura:
+    #         file.write(' '.join(row) + '\n') 
 else:
     print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 

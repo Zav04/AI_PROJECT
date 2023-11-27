@@ -152,14 +152,15 @@ def a_star(matriz, start, end):
         pygame.display.flip()
         
         current_node = heapq.heappop(open_list) 
-        closed_set.add(current_node.position)
+        ##closed_set.add(current_node.position)
         # Se este nó é o destino, reconstrói o caminho
         if current_node == end_node:
             path = []
-            while current_node is not None:
+            cost=current_node.g 
+            while current_node is not None:  
                 path.append((current_node.position, current_node.direction))
-                current_node = current_node.parent                
-            return path[::-1]  # Retorna o caminho invertido
+                current_node = current_node.parent   
+            return path[::-1],cost  # Retorna o caminho invertido
 
         # Marca o nó atual como visitado
         closed_set.add(current_node.position)
@@ -257,8 +258,9 @@ caminho = a_star(matrizProcura, robot_point, product_point)
 
 # Se um caminho foi encontrado
 if(caminho is not None):
-    if len(caminho) > 0:
+    if len(caminho[0]) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
+        print("Custo:",caminho[1])
         # for (row, col), direcao in caminho: # Para cada ponto no caminho e a direção
         #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
         #         #Se for a posição inical não existe direção por isso tem de se passar para o proximo
@@ -279,10 +281,10 @@ end_time = time.time()
 execution_time = end_time - start_time
 print("Tempo de Procura: {:.15f} segundos".format(execution_time))
 
-
-path_positions = set((pos for pos, dir in caminho))  # use um conjunto para otimizar a busca
-draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=product_point, path=path_positions)
-pygame.display.flip()
+if(caminho is not None):
+    path_positions = set((pos for pos, dir in caminho[0]))
+    draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=product_point, path=path_positions)
+    pygame.display.flip()
 
 # Loop principal
 rodando = True
@@ -304,8 +306,9 @@ print("Procura do caminho um caminho PRODUCT TO OUPUT:")
 caminho = a_star(matrizProcura, product_point, output_point)
 
 if(caminho is not None):
-    if len(caminho) > 0:
+    if len(caminho[0]) > 0:
         print("\033[92mCaminho encontrado:\033[0m")
+        print("Custo:",caminho[1])
         # for (row, col), direcao in caminho:
         #     if matrizProcura[row][col] != 'P' and matrizProcura[row][col] != 'O' and matrizProcura[row][col] != 'R':
         #     #Se for a posição inical não existe direção por isso tem de se passar para o proximo
@@ -326,9 +329,10 @@ end_time = time.time()
 execution_time = end_time - start_time
 print("Tempo de Procura: {:.15f} segundos".format(execution_time))
 
-path_positions = set((pos for pos, dir in caminho))  # use um conjunto para otimizar a busca
-draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=product_point, path=path_positions)
-pygame.display.flip()
+if(caminho is not None):
+    path_positions = set((pos for pos, dir in caminho[0]))  # use um conjunto para otimizar a busca
+    draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=product_point, path=path_positions)
+    pygame.display.flip()
 
 
 
