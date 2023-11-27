@@ -221,6 +221,7 @@ for file_path in file_paths:
     #Saber tempo de processamento
     execution_time_po = end_time - start_time
     print("Tempo de Procura: {:.30f} segundos".format(execution_time_po))
+    print("Tempo de Procura: {:.15f} segundos".format(execution_time_po))
         
     results.append({
                     'File Path': file_path,
