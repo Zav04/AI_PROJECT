@@ -1,5 +1,9 @@
+abrir em cmd no vs code
+
 python -m venv AI
 
 .\AI\Scripts\activate
 
 pip install pygame
+pip install pandas
+pip install openpyxl
