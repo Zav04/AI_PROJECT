@@ -85,9 +85,9 @@ def desenha_botao(tela, texto, posicao, tamanho):
 ##########################PYGAMES FUNCTIONS#######################################
 
 
-##DFS não considera o custo do caminho por isso tem de se otimizar para outro algoritmo
-class DFS:
-    # Construtor da classe DFS que inicializa a matriz, dimensões, e as matriz de pontos visitados
+##BFS não considera o custo do caminho por isso tem de se otimizar para outro algoritmo
+class BFS:
+    # Construtor da classe BFS que inicializa a matriz, dimensões, e as matriz de pontos visitados
     def __init__(self, matriz,direction=None):
         self.matriz = matriz  # A matriz de entrada representando o labirinto
         self.rows = len(matriz)  # O número de linhas no labirinto
@@ -100,7 +100,7 @@ class DFS:
         self.prev = [[None for _ in range(self.cols)] for _ in range(self.rows)]  # Uma matriz para armazenar a ponto anterior no caminho mais curto
 
 
-    # Método que executa a busca em profudidade (DFS) a partir do ponto inical
+    # Método que executa a busca em largura (BFS) a partir do ponto inical
     def solve(self, start_row, start_col,searchType):
         q = [(start_row, start_col)]  # Um vector que contém os pontos a serem visitados, começando pelo ponto de início
         self.visited[start_row][start_col] = True 
@@ -122,7 +122,8 @@ class DFS:
                 #(1, 0): Este é um movimento para baixo.
                 #(0, -1): Este é um movimento para a esquerda.
                 #(0, 1): Este é um movimento para a direita.
-                next_row, next_col = row + dx, col + dy # Calcula a próxima ponto                
+                next_row, next_col = row + dx, col + dy 
+                # Calcula a próxima ponto                
                 # Se o proximo ponto é válida (dentro dos limites e não um obstáculo) e não foi visitada, adiciona à fila
                 if (0 <= next_row < self.rows and 0 <= next_col < self.cols and 
                     not self.visited[next_row][next_col] and 
@@ -164,9 +165,9 @@ class DFS:
         path.append((start_row, start_col))  # Adiciona a ponto de início ao caminho
         return path[::-1], cost  # Retorna o caminho invertido (do início para o fim)
 
-    # Método para iniciar a busca em profudidade e reconstruir o caminho, se encontrado
+    # Método para iniciar a busca em largura e reconstruir o caminho, se encontrado
     def search(self, start_row, start_col, end_row, end_col,searchType):
-        prev = self.solve(start_row, start_col,searchType)  # Realiza a busca em profudidade
+        prev = self.solve(start_row, start_col,searchType)  # Realiza a busca em largura
         if prev is None:
             return []
         # Se um caminho for encontrado, reconstrói e retorna o caminho
@@ -186,8 +187,8 @@ with open('Matriz_Random/MatrizRandom.txt', 'r') as f:
     matrizProcura = [linha.strip().split() for linha in f]  # Lê cada linha do ficheiro, remove espaços em branco
 
 
-# Cria um filho da classe DFS
-DFS_search= DFS(matrizProcura)  # Inicializa a classe DFS com a matriz do labirinto
+# Cria um filho da classe BFS
+BFS_search= BFS(matrizProcura)  # Inicializa a classe BFS com a matriz do labirinto
 
 # Obter o número de linhas e colunas do labirinto
 rows = len(matrizProcura)
@@ -224,14 +225,14 @@ draw_matriz_init(screen,matrizProcura,cell_size, start=robot_point,end=product_p
 start_time = time.time()
 
 print("Procura do caminho um caminho ROBOT TO PRODUCT:")
-Robot2Product_path = DFS_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
+Robot2Product_path = BFS_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
 if len(Robot2Product_path[0]) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
     print("Custo:",Robot2Product_path[1])
     # for row, col in Robot2Product_path:  # Para cada ponto no caminho
     #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
     #         matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
-    # with open("DFS_1R_1P_1O/Output/MatrizRandom_DFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
+    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
     #     for row in matrizProcura:
     #         file.write(' '.join(row) + '\n')  
 else:
@@ -247,7 +248,7 @@ draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=produc
 pygame.display.flip()
 
 # Atualiza a matriz do objeto para a próxima busca
-DFS_search.clean()
+BFS_search.clean()
 
 # Loop principal
 rodando = True
@@ -276,7 +277,7 @@ start_time = time.time()
 
 # Procura do caminho do produto até a saída
 print("Procura do caminho um caminho PRODUCT TO OUTPUT :")
-Product2Output_path = DFS_search.search(product_row, product_col, output_row, output_col,'O')  # Procura o caminho do produto até a saída
+Product2Output_path = BFS_search.search(product_row, product_col, output_row, output_col,'O')  # Procura o caminho do produto até a saída
 if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
     print("\033[92mCaminho encontrado:\033[0m")
     print("Custo:",Product2Output_path[1])
@@ -286,7 +287,7 @@ if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
     # for row in matrizProcura:
     #     print(' '.join(row))  # Print do labirinto com o caminho marcado
     # Escreve o labirinto com o caminho do Output
-    # with open("DFS_1R_1P_1O/Output/MatrizRandom_DFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
+    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
     #     for row in matrizProcura:
     #         file.write(' '.join(row) + '\n') 
 else:
