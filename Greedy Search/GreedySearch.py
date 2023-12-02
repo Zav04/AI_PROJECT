@@ -159,6 +159,7 @@ for file_path in file_paths:
                 output_point = (i, j) 
 
 
+    print("Matriz de Procura:",file_path)
     #Start Timmer
     start_time = time.time()
     print("Procura do caminho um caminho ROBOT TO PRODUCT:")
