@@ -51,8 +51,20 @@ def draw_matriz_Path(screen, matriz, cell_size, start=None, end=None, path=None,
         for x, cell in enumerate(row):
             rect = pygame.Rect(x * cell_size, y * cell_size, cell_size, cell_size)
             if visited and (y, x) in visited:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_VISITED, rect)
             elif path and (y, x) in path:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_PATH, rect)
     # Linhas Horizontais            
     for y in range(len(matriz) + 1):
@@ -225,19 +237,20 @@ draw_matriz_init(screen,matrizProcura,cell_size, start=robot_point,end=product_p
 start_time = time.time()
 
 print("Procura do caminho um caminho ROBOT TO PRODUCT:")
-Robot2Product_path = BFS_search.search(robot_row, robot_col, product_row, product_col,'P')  # Procura o caminho do robô até o produto
-if len(Robot2Product_path[0]) > 0:  # Se um caminho foi encontrado
-    print("\033[92mCaminho encontrado:\033[0m")
-    print("Custo:",Robot2Product_path[1])
-    # for row, col in Robot2Product_path:  # Para cada ponto no caminho
-    #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
-    #         matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
-    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
-    #     for row in matrizProcura:
-    #         file.write(' '.join(row) + '\n')  
-else:
-    print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
-#End Timmer
+Robot2Product_path = BFS_search.search(robot_row, robot_col, product_row, product_col,'P')
+if(Robot2Product_path[0] is not None):# Procura o caminho do robô até o produto
+    if len(Robot2Product_path[0]) > 0:  # Se um caminho foi encontrado
+        print("\033[92mCaminho encontrado:\033[0m")
+        print("Custo:",Robot2Product_path[1])
+        # for row, col in Robot2Product_path:  # Para cada ponto no caminho
+        #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'O':   
+        #         matrizProcura[row][col] = 'R'  # Marca o caminho com 'R'
+        # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_ROBOT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n')  
+    else:
+        print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
+    #End Timmer
 end_time = time.time()
 #Saber tempo de processamento
 execution_time = end_time - start_time
@@ -278,20 +291,21 @@ start_time = time.time()
 # Procura do caminho do produto até a saída
 print("Procura do caminho um caminho PRODUCT TO OUTPUT :")
 Product2Output_path = BFS_search.search(product_row, product_col, output_row, output_col,'O')  # Procura o caminho do produto até a saída
-if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
-    print("\033[92mCaminho encontrado:\033[0m")
-    print("Custo:",Product2Output_path[1])
-    for row, col in Product2Output_path[0]:  # Para cada ponto no caminho
-        if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
-            matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
-    # for row in matrizProcura:
-    #     print(' '.join(row))  # Print do labirinto com o caminho marcado
-    # Escreve o labirinto com o caminho do Output
-    # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
-    #     for row in matrizProcura:
-    #         file.write(' '.join(row) + '\n') 
-else:
-    print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
+if(Product2Output_path[0] is not None):# Procura o caminho do robô até o produto
+    if len(Product2Output_path[0]) > 0:  # Se um caminho foi encontrado
+        print("\033[92mCaminho encontrado:\033[0m")
+        print("Custo:",Product2Output_path[1])
+        # for row, col in Product2Output_path[0]:  # Para cada ponto no caminho
+        #     if matrizProcura[row][col] != 'P' or matrizProcura[row][col] != 'R':  
+        #         matrizProcura[row][col] = 'O'  # Marca o caminho com 'O'
+        # for row in matrizProcura:
+        #     print(' '.join(row))  # Print do labirinto com o caminho marcado
+        # Escreve o labirinto com o caminho do Output
+        # with open("BFS_1R_1P_1O/Output/MatrizRandom_BFS_1R_1P_1O_OUTPUT_EXIT_VERSION.txt", "w") as file:
+        #     for row in matrizProcura:
+        #         file.write(' '.join(row) + '\n') 
+    else:
+        print("\033[91mCaminho não encontrado\033[0m")  # Se não houver caminho
 
 #Mostrar na janela o Path encontrado
 draw_matriz_Path(screen, matrizProcura, cell_size, start=product_point, end=output_point, path=Product2Output_path[0])

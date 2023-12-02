@@ -73,8 +73,20 @@ def draw_matriz_Path(screen, matriz, cell_size, start=None, end=None, path=None,
         for x, cell in enumerate(row):
             rect = pygame.Rect(x * cell_size, y * cell_size, cell_size, cell_size)
             if visited and (y, x) in visited:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_VISITED, rect)
             elif path and (y, x) in path:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_PATH, rect)
     # Linhas Horizontais            
     for y in range(len(matriz) + 1):

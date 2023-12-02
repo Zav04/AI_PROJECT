@@ -64,17 +64,29 @@ def draw_matriz_init(screen, matriz, cell_size, start=None, end=None, path=None,
     for x in range(len(matriz[0]) + 1):
         pygame.draw.line(screen, (0, 0, 0), (x * cell_size, 0), (x * cell_size, height))
     pygame.display.flip()
-    
-    
-    
+
+
+
 def draw_matriz_Path(screen, matriz, cell_size, start=None, end=None, path=None, visited=None):
     # Desenha os retângulos
     for y, row in enumerate(matriz):
         for x, cell in enumerate(row):
             rect = pygame.Rect(x * cell_size, y * cell_size, cell_size, cell_size)
             if visited and (y, x) in visited:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_VISITED, rect)
             elif path and (y, x) in path:
+                if(y,x) == start:
+                    pygame.draw.rect(screen, COLOR_START, rect)
+                    continue
+                if(y,x) == end:
+                    pygame.draw.rect(screen, COLOR_END, rect)
+                    continue
                 pygame.draw.rect(screen, COLOR_PATH, rect)
     # Linhas Horizontais            
     for y in range(len(matriz) + 1):
@@ -334,8 +346,8 @@ execution_time = end_time - start_time
 print("Tempo de Procura: {:.15f} segundos".format(execution_time))
 
 if(caminho is not None):
-    path_positions = set((pos for pos, dir in caminho[0]))  # use um conjunto para otimizar a busca
-    draw_matriz_Path(screen, matrizProcura, cell_size, start=robot_point, end=product_point, path=path_positions)
+    path_positions = set((pos for pos, dir in caminho[0]))
+    draw_matriz_Path(screen, matrizProcura, cell_size, start=product_point, end=output_point, path=path_positions)
     pygame.display.flip()
 
 
